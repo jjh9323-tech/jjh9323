@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위바위보 게임</title>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .display-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0 30px;
+        }
+
+        .display-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+        }
+
+        .emoji-screen {
+            font-size: 3.5rem;
+            height: 80px;
+            line-height: 80px;
+            transition: transform 0.1s ease;
+        }
+
+        /* 긴장감 연출용 바운스 애니메이션 */
+        .shake {
+            animation: shake 0.15s infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: translateY(-5px); }
+            100% { transform: translateY(5px); }
+        }
+
+        .display-box span {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .vs-text {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #e74c3c;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 0;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 12px;
+            background-color: #f0f3f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #e2e8f0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .result-message {
+            font-size: 1.25rem;
+            font-weight: bold;
+            min-height: 1.5em;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>가위바위보</h1>
+
+    <div class="display-area">
+        <div class="display-box">
+            <div id="player-choice" class="emoji-screen">❓</div>
+            <span>나</span>
+        </div>
+        <div class="vs-text">VS</div>
+        <div class="display-box">
+            <div id="computer-choice" class="emoji-screen">❓</div>
+            <span>컴퓨터</span>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn" onclick="playGame('가위')">✌️</button>
+        <button class="btn" onclick="playGame('바위')">✊</button>
+        <button class="btn" onclick="playGame('보')">🖐️</button>
+    </div>
+
+    <div class="result-message" id="result">선택해주세요!</div>
+</div>
+
+<script>
+    // Web Audio API를 활용한 내장 효과음 생성기
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+
+        if (type === 'tick') {
+            // 카운트다운 틱 소리
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, now);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            osc.start(now);
+            osc.stop(now + 0.05);
+        } else if (type === 'win') {
+            // 승리 효과음 (상승음)
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(800, now + 0.3);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            osc.start(now);
+            osc.stop(now + 0.3);
+        } else if (type === 'lose') {
+            // 패배 효과음 (하강음)
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.4);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            osc.start(now);
+            osc.stop(now + 0.4);
+        } else if (type === 'draw') {
+            // 무승부 효과음 (단음)
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(500, now);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        }
+    }
+
+    const choices = ['가위', '바위', '보'];
+    const emojiMap = {
+        '가위': '✌️',
+        '바위': '✊',
+        '보': '🖐️'
+    };
+
+    function playGame(playerChoice) {
+        const buttons = document.querySelectorAll('.btn');
+        const playerDisplay = document.getElementById('player-choice');
+        const computerDisplay = document.getElementById('computer-choice');
+        const resultDisplay = document.getElementById('result');
+
+        // 버튼 중복 클릭 방지
+        buttons.forEach(btn => btn.disabled = true);
+
+        // 연출 초기화
+        playerDisplay.textContent = emojiMap[playerChoice];
+        computerDisplay.textContent = '✊';
+        resultDisplay.textContent = '안 내면 진 거...';
+        
+        playerDisplay.classList.add('shake');
+        computerDisplay.classList.add('shake');
+
+        // 긴장감 연출 (랜덤 롤링 애니메이션 + 카운트 소리)
+        let count = 0;
+        const interval = setInterval(() => {
+            computerDisplay.textContent = emojiMap[choices[count % 3]];
+            playSound('tick');
+            count++;
+        }, 100);
+
+        // 1.2초 후 최종 결과 발표
+        setTimeout(() => {
+            clearInterval(interval);
+
+            playerDisplay.classList.remove('shake');
+            computerDisplay.classList.remove('shake');
+
+            // 컴퓨터의 최종 선택
+            const computerChoice = choices[Math.floor(Math.random() * 3)];
+            computerDisplay.textContent = emojiMap[computerChoice];
+
+            // 승패 판정 및 효과음 재생
+            if (playerChoice === computerChoice) {
+                resultDisplay.textContent = '무승부입니다! 🤝';
+                playSound('draw');
+            } else if (
+                (playerChoice === '가위' && computerChoice === '보') ||
+                (playerChoice === '바위' && computerChoice === '가위') ||
+                (playerChoice === '보' && computerChoice === '바위')
+            ) {
+                resultDisplay.textContent = '이겼습니다! 🎉';
+                playSound('win');
+            } else {
+                resultDisplay.textContent = '졌습니다... 😢';
+                playSound('lose');
+            }
+
+            // 버튼 활성화
+            buttons.forEach(btn => btn.disabled = false);
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>
