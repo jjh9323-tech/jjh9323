@@ -1,264 +1,54 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>가위바위보 게임</title>
-    <style>
-        body {
-            font-family: 'Pretendard', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 320px;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 1.5rem;
-        }
-
-        .display-area {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 20px 0 30px;
-        }
-
-        .display-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100px;
-        }
-
-        .emoji-screen {
-            font-size: 3.5rem;
-            height: 80px;
-            line-height: 80px;
-            transition: transform 0.1s ease;
-        }
-
-        /* 긴장감 연출용 바운스 애니메이션 */
-        .shake {
-            animation: shake 0.15s infinite alternate;
-        }
-
-        @keyframes shake {
-            0% { transform: translateY(-5px); }
-            100% { transform: translateY(5px); }
-        }
-
-        .display-box span {
-            font-size: 0.9rem;
-            color: #777;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        .vs-text {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: #e74c3c;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        button {
-            flex: 1;
-            padding: 15px 0;
-            font-size: 1.8rem;
-            border: none;
-            border-radius: 12px;
-            background-color: #f0f3f6;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        button:hover:not(:disabled) {
-            background-color: #e2e8f0;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        button:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
-        button:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .result-message {
-            font-size: 1.25rem;
-            font-weight: bold;
-            min-height: 1.5em;
-            color: #2c3e50;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>가위바위보</h1>
-
-    <div class="display-area">
-        <div class="display-box">
-            <div id="player-choice" class="emoji-screen">❓</div>
-            <span>나</span>
-        </div>
-        <div class="vs-text">VS</div>
-        <div class="display-box">
-            <div id="computer-choice" class="emoji-screen">❓</div>
-            <span>컴퓨터</span>
-        </div>
-    </div>
-
-    <div class="buttons">
-        <button class="btn" onclick="playGame('가위')">✌️</button>
-        <button class="btn" onclick="playGame('바위')">✊</button>
-        <button class="btn" onclick="playGame('보')">🖐️</button>
-    </div>
-
-    <div class="result-message" id="result">선택해주세요!</div>
-</div>
-
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>[수행평가] 코하우징 설계하기</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f1ecdf;color:#3c3024;font-family:"Malgun Gothic",Arial,sans-serif}button,input,textarea{font:inherit}.top{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#fffdf7;border-bottom:1px solid #d9ccb6}.top h1{margin:0;font-size:26px}.top p{margin:3px 0;color:#867963;font-size:11px}.student{display:flex;gap:10px;background:#f2ece0;padding:9px;border-radius:12px}.student label{font-size:12px;font-weight:bold}.student input{width:105px;padding:8px;border:1px solid #cdbfa7;border-radius:7px}.bar{display:flex;justify-content:space-between;gap:10px;padding:10px 24px;background:#faf6ed}.modes,.actions{display:flex;gap:8px}.bar button{padding:9px 13px;border:1px solid #d5c8b3;border-radius:9px;background:#fff;cursor:pointer;font-weight:bold}.bar button.active{border:2px solid #6c874f;background:#edf4e4}.bar .danger{color:#a24739}.work{display:grid;grid-template-columns:225px minmax(560px,1fr) 210px;gap:12px;padding:14px 22px;max-width:1500px;margin:auto}.card{background:#fffdf8;border:1px solid #d9ccb6;border-radius:14px;box-shadow:0 4px 15px #6e5b3f20;overflow:hidden}.tools{padding:11px}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#eee6d8;padding:4px;border-radius:9px}.tabs button{border:0;background:transparent;padding:8px;font-weight:bold;cursor:pointer}.tabs button.active{background:#fff;border-radius:7px;color:#58733e}.hint{font-size:9px;color:#877a66}.palette{display:grid;gap:6px;max-height:575px;overflow:auto}.palette.furniture{grid-template-columns:1fr 1fr}.tool{min-height:46px;display:flex;align-items:center;gap:7px;padding:6px;border:1px solid #d3c5ad;border-left:6px solid var(--c,#d8c8a7);border-radius:9px;background:#faf5e9;cursor:grab;text-align:left}.tool span{font-size:23px}.tool b{font-size:10px}.furniture .tool{min-height:69px;flex-direction:column;justify-content:center;border-left:1px solid #d3c5ad;text-align:center}.designer{display:flex;flex-direction:column}.boardhead{display:flex;justify-content:space-between;padding:12px 15px;border-bottom:1px solid #ded2bd}.boardhead small{color:#887b67}.board{position:relative;min-height:590px;overflow:hidden;touch-action:none;user-select:none;background:#f8f3e7}.board.building{border:18px solid #d7c6a8;border-top:9px solid #b5c48c;background-image:linear-gradient(#cfc1aa 2px,transparent 2px),linear-gradient(90deg,#e8dcc9 1px,transparent 1px);background-size:100% 20%,38px 38px}.board.village{border:11px solid #b5a17b;background:#dce5c5;background-image:radial-gradient(#90a66d55 1px,transparent 1px);background-size:19px 19px}.floors{position:absolute;inset:0 auto 0 0;width:40px;display:grid;grid-template-rows:repeat(5,1fr)}.floors span{display:grid;place-items:center;background:#eee5d7bb;border-right:1px dashed #a8987d;font-size:9px;font-weight:bold;writing-mode:vertical-rl}.roads:before,.roads:after{content:"";position:absolute;left:-10%;top:45%;width:120%;height:45px;border:2px dashed #bea773;border-radius:50%;background:#eee0b8;transform:rotate(-12deg)}.roads:after{transform:rotate(55deg)}.empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:#897b65;pointer-events:none}.empty span{font-size:36px}.placed{position:absolute;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:grab}.placed.space{border:3px solid color-mix(in srgb,var(--c),#5c4931 25%);border-radius:15px;background:color-mix(in srgb,var(--c),white 43%);box-shadow:0 4px 8px #57442630}.placed.furniture{border:2px solid #b7a686;border-radius:12px;background:#fff9efed;box-shadow:0 3px 7px #58452525}.placed .ico{font-size:29px}.placed b{max-width:95%;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.placed.selected{outline:3px solid #3f70cd;outline-offset:3px;z-index:4}.resize{position:absolute;right:-10px;bottom:-10px;width:28px;height:28px;border:2px solid #fff;border-radius:7px;background:#3f70cd;color:#fff;cursor:nwse-resize}.inspector{padding:12px}.inspector h2{font-size:14px;border-bottom:1px solid #e3d8c6;padding-bottom:10px}.none{display:grid;place-content:center;height:190px;text-align:center;border:2px dashed #d4c6ae;border-radius:10px;color:#91836e}.edit{display:grid;gap:10px}.preview{display:grid;place-items:center;min-height:95px;background:#f3ecdf;border-radius:11px}.preview span{font-size:34px}.edit label{font-size:10px;font-weight:bold}.edit input{width:100%;padding:9px;border:1px solid #baaa8d;border-radius:8px}.edit small{color:#8d806a;font-size:8px}.delete{padding:8px;border:1px solid #dfb7ad;border-radius:8px;background:#fff2ef;color:#9d4434}.rules{max-width:1456px;margin:4px auto 18px;padding:20px;background:#fffdf8;border:1px solid #d5c6aa;border-radius:16px}.rules h2{margin:0;font-size:20px}.rules>p{color:#847660;font-size:10px}.rulegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.rulegrid article{padding:12px;border:1px solid #dccfb9;border-top:5px solid #88a269;border-radius:11px;background:#faf6ee}.rulegrid h3{font-size:12px}.rulegrid p{min-height:30px;font-size:9px;color:#7e715c}.rulegrid textarea{width:100%;min-height:105px;padding:9px;border:1px solid #cdbda4;border-radius:8px;resize:vertical}.help{display:none;position:fixed;inset:0;z-index:20;background:#30261db8;place-items:center}.help.show{display:grid}.helpbox{width:min(420px,90vw);padding:24px;border-radius:18px;background:#fffaf0}.helpbox li{margin:10px 0}.helpbox>button{width:100%;padding:10px;border:0;border-radius:9px;background:#667f4a;color:#fff;font-weight:bold}@media(max-width:900px){.work{grid-template-columns:190px 1fr}.inspector{grid-column:1/3}.rulegrid{grid-template-columns:1fr 1fr}}@media print{@page{size:landscape;margin:7mm}.bar,.tools,.inspector{display:none}.work{display:block;padding:0}.designer{height:120mm}.board{min-height:0}.rules{break-before:page}.rulegrid textarea{min-height:38mm}}
+</style>
+<style id="pdf-print-fix">
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  html,body{width:100%;height:auto;overflow:visible}
+  .top{height:22mm!important;padding:2mm 4mm!important}
+  .work{display:block!important;width:var(--locked-board-width,900px)!important;max-width:none!important;margin:0!important;padding:0!important}
+  .designer{display:flex!important;flex-direction:column!important;width:var(--locked-board-width,900px)!important;height:calc(var(--locked-board-height,590px) + 15mm)!important;overflow:visible!important;border:1px solid #d9ccb6!important}
+  .boardhead{height:15mm!important;flex:0 0 15mm!important;padding:3mm 4mm!important}
+  .board{display:block!important;position:relative!important;flex:none!important;width:var(--locked-board-width,900px)!important;height:var(--locked-board-height,590px)!important;min-height:var(--locked-board-height,590px)!important;max-height:var(--locked-board-height,590px)!important;overflow:hidden!important}
+  .placed{display:flex!important;visibility:visible!important;opacity:1!important}
+  .placed.selected{outline:none!important}
+  .placed .resize{display:none!important}
+  .empty{display:none!important}
+  .top,.work{display:none!important}
+  .print-designs{display:block!important}
+  .print-page{width:var(--locked-board-width,900px)!important;break-after:page;page-break-after:always}
+  .print-page-head{height:18mm;display:flex;align-items:center;justify-content:space-between;padding:2mm 4mm;background:#fffdf7;border:1px solid #d9ccb6}
+  .print-page-head h2{margin:0;font-size:20px}.print-page-head p{margin:2px 0 0;font-size:10px;color:#786b58}.print-student{font-size:12px;font-weight:bold}
+  .print-page .board{width:var(--locked-board-width,900px)!important;height:var(--locked-board-height,590px)!important;min-height:var(--locked-board-height,590px)!important;max-height:var(--locked-board-height,590px)!important}
+  .rules{break-before:auto;page-break-before:auto;width:100%!important;margin:0!important}
+}
+</style></head><body>
+<header class="top"><div><h1>🏡 [수행평가] 코하우징 설계하기</h1><p>함께 살고, 따로 쉬는 우리들의 주거 공간</p></div><div class="student"><label>학번 <input id="number" placeholder="예: 30101"></label><label>이름 <input id="name" placeholder="이름"></label></div></header>
+<section class="bar"><div class="modes"><button id="buildingBtn" class="active">🏢 건물형 코하우징</button><button id="villageBtn">🏘️ 마을형 코하우징</button></div><div class="actions"><button id="helpBtn">💡 사용 방법</button><button onclick="prepareAndPrint()">🖨️ 인쇄·PDF 저장</button><button class="danger" id="resetBtn">↻ 처음부터</button></div></section>
+<section class="work"><aside class="card tools"><h2 style="font-size:14px;margin:3px 0 8px">배치할 공간</h2><p class="hint">공간을 끌어서 놓거나 한 번 눌러 추가하세요.</p><div id="palette" class="palette"></div></aside><section class="card designer"><div class="boardhead"><div><b id="boardTitle">건물형 설계판</b><br><small>공간을 자유롭게 배치해 보세요.</small></div><small id="count">배치한 공간 0개</small></div><div id="board" class="board building"><div id="guide" class="floors"><span>옥상</span><span>4층</span><span>3층</span><span>2층</span><span>1층</span></div><div id="empty" class="empty"><span>👆</span><b>왼쪽의 공간을 이곳에 놓아 보세요</b><small>개인 공간과 공동 공간이 조화를 이루도록 설계해요.</small></div></div></section><aside class="card inspector"><h2>공간 이름과 크기 바꾸기</h2><div id="inspector" class="none">✏️<br>설계판에서 공간을<br>선택해 주세요.</div></aside></section>
+<section id="printDesigns" class="print-designs" style="display:none"></section>
+<section class="rules"><h2>📜 [수행평가] 코하우징 주거 공동 규약 세우기</h2><p>모두가 행복하게 생활하기 위해 함께 지켜야 할 약속을 생각해 봅시다.</p><div class="rulegrid"><article><h3>🏡 공동 공간 사용 측면</h3><p>공동 공간을 언제, 어떻게 사용하면 좋을까요?</p><textarea placeholder="나의 생각을 구체적으로 써 보세요."></textarea></article><article><h3>🤝 생활 규칙 측면</h3><p>서로 배려하며 지키고 싶은 생활 규칙은 무엇인가요?</p><textarea placeholder="나의 생각을 구체적으로 써 보세요."></textarea></article><article><h3>🧾 재정 및 유지 관리 측면</h3><p>공동 비용과 시설 관리는 어떻게 나누면 좋을까요?</p><textarea placeholder="나의 생각을 구체적으로 써 보세요."></textarea></article><article><h3>💬 갈등 해결 측면</h3><p>의견이 다르거나 갈등이 생기면 어떻게 해결할까요?</p><textarea placeholder="나의 생각을 구체적으로 써 보세요."></textarea></article></div></section>
+<div id="help" class="help"><div class="helpbox"><h2>이렇게 활동해요!</h2><ol><li>건물형과 마을형을 각각 모두 설계해요. 버튼을 바꿔도 설계 내용은 그대로 저장돼요.</li><li>왼쪽의 공간을 끌거나 눌러 설계판에 놓아요.</li><li>공간을 선택하고 ↘를 끌어 크기를 바꿔요.</li><li>공간 이름과 공동 규약을 작성한 뒤 PDF로 저장해요.</li></ol><button id="closeHelp">알겠어요</button></div></div>
 <script>
-    // Web Audio API를 활용한 내장 효과음 생성기
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    function playSound(type) {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        const now = audioCtx.currentTime;
-
-        if (type === 'tick') {
-            // 카운트다운 틱 소리
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, now);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-            osc.start(now);
-            osc.stop(now + 0.05);
-        } else if (type === 'win') {
-            // 승리 효과음 (상승음)
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(400, now);
-            osc.frequency.exponentialRampToValueAtTime(800, now + 0.3);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-            osc.start(now);
-            osc.stop(now + 0.3);
-        } else if (type === 'lose') {
-            // 패배 효과음 (하강음)
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.exponentialRampToValueAtTime(100, now + 0.4);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-            osc.start(now);
-            osc.stop(now + 0.4);
-        } else if (type === 'draw') {
-            // 무승부 효과음 (단음)
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(500, now);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-            osc.start(now);
-            osc.stop(now + 0.2);
-        }
-    }
-
-    const choices = ['가위', '바위', '보'];
-    const emojiMap = {
-        '가위': '✌️',
-        '바위': '✊',
-        '보': '🖐️'
-    };
-
-    function playGame(playerChoice) {
-        const buttons = document.querySelectorAll('.btn');
-        const playerDisplay = document.getElementById('player-choice');
-        const computerDisplay = document.getElementById('computer-choice');
-        const resultDisplay = document.getElementById('result');
-
-        // 버튼 중복 클릭 방지
-        buttons.forEach(btn => btn.disabled = true);
-
-        // 연출 초기화
-        playerDisplay.textContent = emojiMap[playerChoice];
-        computerDisplay.textContent = '✊';
-        resultDisplay.textContent = '안 내면 진 거...';
-        
-        playerDisplay.classList.add('shake');
-        computerDisplay.classList.add('shake');
-
-        // 긴장감 연출 (랜덤 롤링 애니메이션 + 카운트 소리)
-        let count = 0;
-        const interval = setInterval(() => {
-            computerDisplay.textContent = emojiMap[choices[count % 3]];
-            playSound('tick');
-            count++;
-        }, 100);
-
-        // 1.2초 후 최종 결과 발표
-        setTimeout(() => {
-            clearInterval(interval);
-
-            playerDisplay.classList.remove('shake');
-            computerDisplay.classList.remove('shake');
-
-            // 컴퓨터의 최종 선택
-            const computerChoice = choices[Math.floor(Math.random() * 3)];
-            computerDisplay.textContent = emojiMap[computerChoice];
-
-            // 승패 판정 및 효과음 재생
-            if (playerChoice === computerChoice) {
-                resultDisplay.textContent = '무승부입니다! 🤝';
-                playSound('draw');
-            } else if (
-                (playerChoice === '가위' && computerChoice === '보') ||
-                (playerChoice === '바위' && computerChoice === '가위') ||
-                (playerChoice === '보' && computerChoice === '바위')
-            ) {
-                resultDisplay.textContent = '이겼습니다! 🎉';
-                playSound('win');
-            } else {
-                resultDisplay.textContent = '졌습니다... 😢';
-                playSound('lose');
-            }
-
-            // 버튼 활성화
-            buttons.forEach(btn => btn.disabled = false);
-        }, 1200);
-    }
-</script>
-
-</body>
-</html>
+const spaces=[['개인 주거 공간','🏠','#f1b55c',150,105],['공용 거실','🛋️','#a7c77e',165,108],['공용 주방·식당','🍽️','#e4a174',175,108],['공용 세탁실','🧺','#79bac2',145,98],['공동 텃밭','🌱','#83ad68',166,112],['어린이 놀이터','🛝','#e7c454',166,112],['공동 작업실','🛠️','#b696c5',155,102],['공동 마당','🌳','#94c293',175,115],['공동 주차장','🅿️','#a4afb6',170,102],['내가 만든 공간','✏️','#e6d3a3',155,102]];
+const board=document.querySelector('#board'),palette=document.querySelector('#palette'),inspector=document.querySelector('#inspector');let mode='building',selected=null,drag=null,resize=null,id=0;const modeNodes={building:[],village:[]};
+function tools(){return spaces.map((x,i)=>({label:x[0],icon:x[1],color:x[2],w:x[3],h:x[4],kind:'space',id:'s'+i}))}
+function drawPalette(){palette.className='palette';palette.innerHTML='';tools().forEach(t=>{let b=document.createElement('button');b.className='tool';b.style.setProperty('--c',t.color);b.draggable=true;b.innerHTML=`<span>${t.icon}</span><b>${t.label}</b>`;b.onclick=()=>add(t,45+(id%5)*18,35+(id%5)*18);b.ondragstart=e=>e.dataTransfer.setData('text/tool',JSON.stringify(t));palette.appendChild(b)})}
+function add(t,x,y){const el=document.createElement('div');el.className='placed '+t.kind;el.dataset.id=++id;el.style.cssText=`left:${x}px;top:${y}px;width:${t.w}px;height:${t.h}px;--c:${t.color}`;el.innerHTML=`<span class="ico">${t.icon}</span><b>${t.label}</b><button class="resize">↘</button>`;el._data={...t,label:t.label};el.onpointerdown=e=>startDrag(e,el);el.querySelector('.resize').onpointerdown=e=>startResize(e,el);board.appendChild(el);select(el);updateCount()}
+function select(el){document.querySelectorAll('.placed').forEach(x=>x.classList.remove('selected'));selected=el;if(!el){inspector.className='none';inspector.innerHTML='✏️<br>설계판에서 공간을<br>선택해 주세요.';return}el.classList.add('selected');inspector.className='edit';inspector.innerHTML=`<div class="preview"><span>${el._data.icon}</span><b>${el._data.label}</b></div><label>이 공간은 어떤 곳인가요?<input maxlength="18" value="${el._data.label.replaceAll('"','&quot;')}"></label><small>이름을 바꾸거나 오른쪽 아래 ↘를 끌어 크기를 조절하세요.</small><button class="delete">🗑 선택한 공간 삭제</button>`;inspector.querySelector('input').oninput=e=>{el._data.label=e.target.value;el.querySelector('b').textContent=e.target.value;inspector.querySelector('.preview b').textContent=e.target.value};inspector.querySelector('.delete').onclick=()=>{el.remove();select(null);updateCount()}}
+function startDrag(e,el){if(e.target.classList.contains('resize'))return;e.preventDefault();select(el);const r=board.getBoundingClientRect();drag={el,dx:e.clientX-r.left-el.offsetLeft,dy:e.clientY-r.top-el.offsetTop}}
+function startResize(e,el){e.preventDefault();e.stopPropagation();select(el);resize={el,x:e.clientX,y:e.clientY,w:el.offsetWidth,h:el.offsetHeight}}
+window.onpointermove=e=>{const r=board.getBoundingClientRect();if(resize){let min=resize.el.classList.contains('space')?[110,80]:[48,48];resize.el.style.width=Math.max(min[0],Math.min(r.width-resize.el.offsetLeft,resize.w+e.clientX-resize.x))+'px';resize.el.style.height=Math.max(min[1],Math.min(r.height-resize.el.offsetTop,resize.h+e.clientY-resize.y))+'px'}else if(drag){drag.el.style.left=Math.max(0,Math.min(r.width-drag.el.offsetWidth,e.clientX-r.left-drag.dx))+'px';drag.el.style.top=Math.max(0,Math.min(r.height-drag.el.offsetHeight,e.clientY-r.top-drag.dy))+'px'}};window.onpointerup=()=>{drag=resize=null};
+board.ondragover=e=>e.preventDefault();board.ondrop=e=>{e.preventDefault();let raw=e.dataTransfer.getData('text/tool');if(!raw)return;let t=JSON.parse(raw),r=board.getBoundingClientRect();add(t,e.clientX-r.left-t.w/2,e.clientY-r.top-t.h/2)};board.onclick=e=>{if(e.target===board)select(null)};
+function updateCount(){let n=board.querySelectorAll('.placed').length;document.querySelector('#count').textContent='배치한 공간 '+n+'개';document.querySelector('#empty').style.display=n?'none':'grid'}
+function saveCurrentMode(){modeNodes[mode]=Array.from(board.querySelectorAll('.placed'))}
+function setMode(m){if(m===mode)return;saveCurrentMode();modeNodes[mode].forEach(x=>x.remove());select(null);mode=m;board.className='board '+m;modeNodes[m].forEach(x=>board.appendChild(x));document.querySelector('#buildingBtn').classList.toggle('active',m==='building');document.querySelector('#villageBtn').classList.toggle('active',m==='village');document.querySelector('#boardTitle').textContent=(m==='building'?'건물형':'마을형')+' 설계판';document.querySelector('#guide').outerHTML=m==='building'?'<div id="guide" class="floors"><span>옥상</span><span>4층</span><span>3층</span><span>2층</span><span>1층</span></div>':'<div id="guide" class="roads"></div>';updateCount()}
+document.querySelector('#buildingBtn').onclick=()=>setMode('building');document.querySelector('#villageBtn').onclick=()=>setMode('village');document.querySelector('#resetBtn').onclick=()=>{if(!board.querySelector('.placed')||confirm('현재 설계판의 모든 공간을 지울까요?')){board.querySelectorAll('.placed').forEach(x=>x.remove());modeNodes[mode]=[];select(null);updateCount()}};document.querySelector('#helpBtn').onclick=()=>document.querySelector('#help').classList.add('show');document.querySelector('#closeHelp').onclick=()=>document.querySelector('#help').classList.remove('show');
+let lockedBoardSize={w:board.getBoundingClientRect().width,h:board.getBoundingClientRect().height};
+function rememberBoardSize(){if(!matchMedia('print').matches){const r=board.getBoundingClientRect();lockedBoardSize={w:r.width,h:r.height}}}
+function lockPrintCoordinates(){document.documentElement.style.setProperty('--locked-board-width',lockedBoardSize.w+'px');document.documentElement.style.setProperty('--locked-board-height',lockedBoardSize.h+'px');document.querySelectorAll('.placed').forEach(el=>{el.style.left=el.offsetLeft+'px';el.style.top=el.offsetTop+'px';el.style.width=el.offsetWidth+'px';el.style.height=el.offsetHeight+'px'})}
+function buildPrintDesigns(){saveCurrentMode();const host=document.querySelector('#printDesigns');host.innerHTML='';[['building','건물형 코하우징'],['village','마을형 코하우징']].forEach(([m,title])=>{const page=document.createElement('section');page.className='print-page';const head=document.createElement('header');head.className='print-page-head';head.innerHTML=`<div><h2>${m==='building'?'🏢':'🏘️'} [수행평가] ${title} 설계하기</h2><p>내가 설계한 ${title}</p></div><div class="print-student">학번 ${document.querySelector('#number').value||'________'}　 이름 ${document.querySelector('#name').value||'________'}</div>`;const clone=document.createElement('div');clone.className='board '+m;clone.innerHTML=m==='building'?'<div class="floors"><span>옥상</span><span>4층</span><span>3층</span><span>2층</span><span>1층</span></div>':'<div class="roads"></div>';modeNodes[m].forEach(el=>{const copy=el.cloneNode(true);copy.classList.remove('selected');clone.appendChild(copy)});page.append(head,clone);host.appendChild(page)})}
+function prepareAndPrint(){rememberBoardSize();lockPrintCoordinates();buildPrintDesigns();requestAnimationFrame(()=>window.print())}
+window.addEventListener('resize',rememberBoardSize);window.addEventListener('beforeprint',()=>{lockPrintCoordinates();buildPrintDesigns()});window.addEventListener('afterprint',()=>{document.querySelector('#printDesigns').innerHTML='';document.documentElement.style.removeProperty('--locked-board-width');document.documentElement.style.removeProperty('--locked-board-height');rememberBoardSize()});drawPalette();
+</script></body></html>
